@@ -40,6 +40,7 @@ module.exports = {
 			if(subcommand === 'play'){
 				const results = await client.distube.search(options.getString('url'), {limit: 1});
 				if(results){
+					await interaction.deferReply({ ephemeral: true });
 					const result = results.shift();
 					await client.distube.play(VoiceChannel, result.url, {textChannel: channel, member: member});
 					const resultEmbed = new EmbedBuilder()
@@ -51,7 +52,6 @@ module.exports = {
 						.setImage(result.thumbnail)
 						.setFooter({ text: `Autor: ${result.uploader.name}` });
 
-					await interaction.deferReply({ ephemeral: true });
 
 					return await interaction.editReply({embeds: [resultEmbed]});
 				}
