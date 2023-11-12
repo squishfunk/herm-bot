@@ -1,7 +1,7 @@
 const { Collection } = require('discord.js')
 const { readdirSync } = require('fs')
 const ascii = require('ascii-table')
-const registerCommands = require('register-commands.handler');
+const registerCommands = require('./register-commands.handler.js');
 
 const table = new ascii().setHeading("Command", "Load status")
 
