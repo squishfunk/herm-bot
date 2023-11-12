@@ -51,8 +51,9 @@ module.exports = {
 						.setImage(result.thumbnail)
 						.setFooter({ text: `Autor: ${result.uploader.name}` });
 
+					await interaction.deferReply({ ephemeral: true });
 
-					return interaction.reply({embeds: [resultEmbed]});
+					return await interaction.editReply({embeds: [resultEmbed]});
 				}
 			}
 
