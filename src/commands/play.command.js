@@ -40,7 +40,7 @@ module.exports = {
 			if(subcommand === 'play'){
 				const results = await client.distube.search(options.getString('url'), {limit: 1});
 				if(results){
-					await interaction.deferReply({ ephemeral: true });
+					await interaction.deferReply();
 					const result = results.shift();
 					await client.distube.play(VoiceChannel, result.url, {textChannel: channel, member: member});
 					const resultEmbed = new EmbedBuilder()
