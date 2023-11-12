@@ -1,7 +1,7 @@
 const { Collection } = require('discord.js')
 const { readdirSync } = require('fs')
 const ascii = require('ascii-table')
-const registerCommands = require('./register-commands.handler.js');
+const registerRestCommands = require('./register-rest-commands.handler.js');
 
 const table = new ascii().setHeading("Command", "Load status")
 
@@ -26,7 +26,8 @@ module.exports = client => {
 	}
 	console.log(table.toString());
 
-	registerCommands(commandsToRegister);
+	const guildIds = client.guilds.cache.map(guild => guild.id);
+	registerRestCommands(commandsToRegister, guildIds);
 
 	client.on('interactionCreate', (interaction) => {
 		if(!interaction.isChatInputCommand() || !client.commands.has(interaction.commandName)) return;
