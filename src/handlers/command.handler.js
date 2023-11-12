@@ -1,8 +1,7 @@
-const { Collection, REST } = require('discord.js')
-const {	Routes } = require('discord-api-types/v9');
+const { Collection } = require('discord.js')
 const { readdirSync } = require('fs')
-const config = require('../../config.js')
 const ascii = require('ascii-table')
+const registerCommands = require('register-commands.handler');
 
 const table = new ascii().setHeading("Command", "Load status")
 
@@ -17,9 +16,9 @@ module.exports = client => {
 
 		if(command.data){
 			client.commands.set(command.data.name, command)
-			table.addRow(command.data.name, '✅');
+			table.addRow(command.data.name, 'Loaded');
 		}else{
-			table.addRow(command.data.name, '❌');
+			table.addRow(command.data.name, 'Failed');
 			continue;
 		}
 
@@ -27,16 +26,7 @@ module.exports = client => {
 	}
 	console.log(table.toString());
 
-	/* TODO przeneś do innego handlera */
-	const rest = new REST({ version: '10' }).setToken(config.token);
-	const guildIds = client.guilds.cache.map(guild => guild.id);
-	for (const guildId of guildIds){
-		rest.put(Routes.applicationGuildCommands(config.client_id, guildId), {
-			body: commandsToRegister
-		})
-			.then(() => console.log(`Added commands to ${guildId}`))
-			.catch(console.error)
-	}
+	registerCommands(commandsToRegister);
 
 	client.on('interactionCreate', (interaction) => {
 		if(!interaction.isChatInputCommand() || !client.commands.has(interaction.commandName)) return;
